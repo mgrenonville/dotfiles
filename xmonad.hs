@@ -31,7 +31,7 @@ myWorkspaces = ["IDE","web","dev","servers","pidgin","xchat","ooo","other","fire
 full = noBorders Full
 
 layouts =  onWorkspaces ["eclipse"] (full ||| avoidStruts (Mirror tiled) ) $  
-            onWorkspaces  ["jboss","dev"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
+            onWorkspaces  ["servers","dev"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
 	    avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
  -- default tiling algorithm partitions the screen into two panes
