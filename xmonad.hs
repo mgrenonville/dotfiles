@@ -83,7 +83,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     [((m .|. modMask, k), windows $ f i)
         | (i, k) <- zip (workspaces conf) numAzerty,
           (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-
+-- keys between ² and = on an azerty keyboard. 13 worspaces.
 numAzerty = [0xb2,0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0,0x29,0x3d]
 
 main = do
