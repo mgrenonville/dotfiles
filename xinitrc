@@ -8,7 +8,7 @@ xrdb -merge ~/.Xresources
 xbindkeys
 
 
-xmona & wmpid=$!
+xmonad & wmpid=$!
 
 setxkbmap fr
 source /home/mgrenonville/.screens.sh
