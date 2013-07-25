@@ -1,0 +1,6 @@
+"xsel -x; xsel -o -b | xsel -i; xdotool click 2; xsel -x"
+    Alt + Insert
+" xsel -p | xsel -i -b"
+    Alt + Delete
+" xsel -b | xsel -i -p"
+    Alt + End
