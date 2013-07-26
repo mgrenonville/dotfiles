@@ -1,9 +1,9 @@
 % Insert the clipboard buffer in current window
 "xsel -x; xsel -o -b | xsel -i; xdotool click 2; xsel -x"
     Alt + Insert
-% Copy Primary in Clipboard
+% Copy Primary to Clipboard
 " xsel -p | xsel -i -b"
-    Alt + Delete
+    Alt + End
 % Copy Clipboard to Primary
 " xsel -b | xsel -i -p"
-    Alt + End
+    Alt + Delete

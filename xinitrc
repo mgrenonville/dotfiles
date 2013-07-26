@@ -1,3 +1,5 @@
+## Don't forget to ln -s ~/.xinitrc ~/.xsession if necessary 
+
 exec >> .session.log 2>> .session.err
 
 echo "xinitrc : `date`"
