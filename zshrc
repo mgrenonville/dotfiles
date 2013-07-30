@@ -57,5 +57,6 @@ export PATH=$PATH:$M2_HOME/bin:$JAVA_HOME:/opt/idea/bin:/opt/firefox/
 [ -d ~/.ssh ] && find ~/.ssh/ -name "id_*" -not -name "*pub" -exec keychain '{}' +
 [ -f ~/.keychain/$HOST-sh ] && source ~/.keychain/$HOST-sh
 
+fpath=(~/dotfiles/completions/src $fpath)
 
 setopt APPEND_HISTORY
