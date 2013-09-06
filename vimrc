@@ -15,7 +15,11 @@ Bundle 'bling/vim-airline'
 
 " git tools
 Bundle 'tpope/vim-fugitive'
+Bundle 'airblade/vim-gitgutter'
 
+" File navigation
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 
 
@@ -27,5 +31,8 @@ set laststatus=2
 set background=dark
 colorscheme Tomorrow-Night-Eighties
 
+
+
+let g:airline#extensions#tabline#enabled = 1
 
 
