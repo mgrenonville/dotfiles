@@ -29,8 +29,14 @@ set relativenumber
 " always display status-line
 set laststatus=2
 set background=dark
-colorscheme Tomorrow-Night
 
+colorscheme Tomorrow-Night 
+" Other them. Might be better"
+" colorscheme Tomorrow-Night-Eighties
+
+
+" Add smart completion of command 
+set wildmenu
 
 set wildmenu
 let g:airline#extensions#tabline#enabled = 1
