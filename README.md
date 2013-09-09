@@ -13,8 +13,10 @@ Install pathogen to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
         https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 Install vim-sensible
+
     $ cd ~/.vim/bundle
     $ git clone git://github.com/tpope/vim-sensible.git
+    $ cd vim-sensible
     $ git checkout v1.0
 
 Install Vundle 
