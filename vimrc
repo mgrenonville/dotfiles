@@ -35,4 +35,5 @@ colorscheme Tomorrow-Night
 set wildmenu
 let g:airline#extensions#tabline#enabled = 1
 
-
+" Toggle NERDTree on F12
+map <F12> :NERDTreeToggle <CR>
