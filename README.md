@@ -3,6 +3,7 @@ dotfiles
 
 
 # INSTALLATION
+## VIM 
 Install pathogen to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
     $ mkdir -p ~/.vim/autoload ~/.vim/bundle; \
