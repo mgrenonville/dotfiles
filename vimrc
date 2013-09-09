@@ -29,10 +29,10 @@ set relativenumber
 " always display status-line
 set laststatus=2
 set background=dark
-colorscheme Tomorrow-Night-Eighties
+colorscheme Tomorrow-Night
 
 
-
+set wildmenu
 let g:airline#extensions#tabline#enabled = 1
 
 
