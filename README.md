@@ -1,14 +1,21 @@
 dotfiles
 ========
-
-
 # INSTALLATION
 ## VIM 
+Create directory for undo, backup and swap
+
+    $ mkdir -p ~/.cache/vim/{swap,backup,undo}
+
 Install pathogen to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
     $ mkdir -p ~/.vim/autoload ~/.vim/bundle; \
       curl -Sso ~/.vim/autoload/pathogen.vim \
         https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+Install vim-sensible
+    $ cd ~/.vim/bundle
+    $ git clone git://github.com/tpope/vim-sensible.git
+    $ git checkout v1.0
 
 Install Vundle 
 
