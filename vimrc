@@ -38,7 +38,6 @@ colorscheme Tomorrow-Night
 " Add smart completion of command 
 set wildmenu
 
-set wildmenu
 let g:airline#extensions#tabline#enabled = 1
 
 " Toggle NERDTree on F12
