@@ -22,6 +22,9 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 
+" Multiple cursor 
+" Uses Ctrl + N
+Bundle 'terryma/vim-multiple-cursors'
 
 filetype plugin indent on     " required!
 syn on 
