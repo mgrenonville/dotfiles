@@ -22,9 +22,12 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 
+" Editing facilities
 " Multiple cursor 
 " Uses Ctrl + N
 Bundle 'terryma/vim-multiple-cursors'
+" Autoclose ", ', (, ...
+Bundle 'Raimondi/delimitMate'
 
 filetype plugin indent on     " required!
 syn on 
