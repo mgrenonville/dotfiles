@@ -1,4 +1,5 @@
 import qualified Data.Map as M
+
 import System.IO
 import XMonad
 import XMonad.Layout.Accordion
@@ -26,12 +27,13 @@ myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#0000BE"
  
 
-myWorkspaces = ["IDE","web","dev","servers","pidgin","xchat","ooo","other","firebird","squirrel","chrome","skype","vm"]
+
+myWorkspaces = ["`","1","2","3","4","5","6","7","8","9","0","-","="]
 
 full = noBorders Full
 
-layouts =  onWorkspaces ["eclipse"] (full ||| avoidStruts (Mirror tiled) ) $  
-            onWorkspaces  ["servers","dev"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
+layouts =  onWorkspaces ["`"] (full ||| avoidStruts (Mirror tiled) ) $  
+            onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
 	    avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
  -- default tiling algorithm partitions the screen into two panes
@@ -51,10 +53,9 @@ myManageHook = composeAll
     , title =? "GNU Image Manipulation Program" --> doFloat
     , title =? "GIMP"                  --> doFloat
     , title     =? "VLC media player" --> doFloat
-    , className =? "Firefox"          --> doF (W.shift "web" )
-    , className =? "Pidgin"           --> doF (W.shift "pidgin" )
-    , className =? "Xchat"           --> doF (W.shift "xchat" )
-    , className =? "net-sourceforge-squirrel_sql-client-Main"           --> doF (W.shift "squirrel" )
+    , className =? "Iceweasel"          --> doF (W.shift "1" )
+    , className =? "Pidgin"           --> doF (W.shift "5" )
+    , className =? "jetbrains-idea"           --> doF (W.shift "`" )
     ]
 
     
@@ -69,6 +70,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     , ((modMask ,  xK_b ), toggleWS )
     , ((modMask  , xK_Left  ), prevWS )
     , ((modMask  , xK_Right ), nextWS )
+   -- , ((0, xF86XK_AudioRaiseVolume),   spawn "amixer set Master 2%+")
+    --, ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 2%-")
+    
     , ((modMask              , xK_BackSpace), focusUrgent)
     ]
     ++
@@ -81,13 +85,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
     [((m .|. modMask, k), windows $ f i)
+        | (i, k) <- zip (workspaces conf) numQwerty,
+          (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    ++
+    [((m .|. modMask, k), windows $ f i)
         | (i, k) <- zip (workspaces conf) numAzerty,
           (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 -- keys between ² and = on an azerty keyboard. 13 worspaces.
-numAzerty = [0xb2,0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0,0x29,0x3d]
+numAzerty = [0xb2,0x26,0xe9,0x22,0x27,0x28,0x28,0xe8,0x5f,0xe7,0xe0,0x29,0x3d]
+
+-- keys between ` and = on an qwerty keyboard. 13 worspaces.
+numQwerty = [0x60,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x30,0x2d,0x3d]
 
 main = do
---      xmproc <- spawnPipe "xmobar"
+      xmproc <- spawnPipe "xmobar"
       xmonad $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }  $ azertyConfig {
                           manageHook = myManageHook <+> manageDocks <+> manageHook defaultConfig,
                           keys = newKeys,
@@ -98,11 +109,10 @@ main = do
                           startupHook = setWMName "LG3D",
                           terminal = "urxvt",
                           workspaces = myWorkspaces,
-                          logHook =  updatePointer (Relative 0.5 0.5) >> takeTopFocus
---  Use this hook in order to activate xmobar
--- (dynamicLogWithPP $ xmobarPP
---                                    { ppOutput = hPutStrLn xmproc
---                                    , ppCurrent = xmobarColor "#09F" "" . wrap "[" "]"
---                                    , ppTitle = xmobarColor "pink" "" . shorten 50
---                                    })
+                          logHook =  (dynamicLogWithPP $ xmobarPP
+                                   { ppOutput = hPutStrLn xmproc
+                                   , ppCurrent = xmobarColor "#09F" "" . wrap "[" "]"
+                                   , ppTitle = xmobarColor "pink" "" . shorten 50
+                                   }) >> updatePointer (Relative 0.5 0.5) >> takeTopFocus
+
 }
