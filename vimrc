@@ -29,6 +29,8 @@ Bundle 'terryma/vim-multiple-cursors'
 " Autoclose ", ', (, ...
 Bundle 'Raimondi/delimitMate'
 
+Bundle 'derekwyatt/vim-scala'
+
 filetype plugin indent on     " required!
 syn on 
 set relativenumber
@@ -48,3 +50,14 @@ let g:airline#extensions#tabline#enabled = 1
 
 " Toggle NERDTree on F12
 map <F12> :NERDTreeToggle <CR>
+
+
+set tabstop=4
+set smartindent
+set shiftwidth=4
+set expandtab
+
+map <F4> :NERDTreeFind <CR>  
+nnoremap <A-left> :bN <CR> 
+nnoremap <A-right> :bn <CR> 
+
