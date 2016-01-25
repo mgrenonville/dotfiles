@@ -21,18 +21,21 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ToggleLayouts
 import XMonad.Util.Run(spawnPipe)
+import XMonad.Actions.Plane
 import qualified XMonad.StackSet as W
+import Graphics.X11.ExtraTypes.XF86
 
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#0000BE"
  
 
 
-myWorkspaces = ["`","1","2","3","4","5","6","7","8","9","0","-","="]
+myWorkspaces = ["`","1","2","3","4","5","6","7","8","9","0","-","=",
+                "p`","p1","p2","p3","p4","p5","p6","p7","p8","p9","p0","p-","p="]
 
 full = noBorders Full
 
-layouts =  onWorkspaces ["`"] (full ||| avoidStruts (Mirror tiled) ) $  
+layouts =  onWorkspaces ["`"] ((full ||| tiled) ||| tabbed shrinkText defaultTheme ||| avoidStruts (Mirror tiled) ) $  
             onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
 	    avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
@@ -63,9 +66,12 @@ myManageHook = composeAll
 
 newKeys x = M.union (M.fromList (myKeys x)) (keys azertyConfig x)
 myKeys conf@(XConfig {XMonad.modMask = modMask}) =
-    [ ((modMask .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
+    [ ((modMask .|. shiftMask, xK_l), spawn "xscreensaver-command -select 2 ;  xscreensaver-command -lock")
 -- Allow full screen mode
     , ((modMask, xK_f ), sendMessage ToggleLayout)
+    , ((0, xF86XK_HomePage), spawn "~/bin/dump_banshee.sh")
+    , ((0, xF86XK_Explorer), spawn "xscreensaver-command -select 1 ; xscreensaver-command -lock")
+    , ((0, xF86XK_Mail), spawn "xscreensaver-command -select 2 ; xscreensaver-command -lock")
 -- Return to last workspace
     , ((modMask ,  xK_b ), toggleWS )
     , ((modMask  , xK_Left  ), prevWS )
@@ -74,6 +80,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     --, ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 2%-")
     
     , ((modMask              , xK_BackSpace), focusUrgent)
+    ]
+    ++
+     [ ((keyMask .|. modMask, keySym), function (Lines 2) Finite direction)
+    | (keySym, direction) <- zip [xK_Left .. xK_Down] $ enumFrom ToLeft
+    , (keyMask, function) <- [(0, planeMove), (shiftMask, planeShift)]
     ]
     ++
     --

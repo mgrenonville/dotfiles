@@ -43,7 +43,7 @@ CASE_SENSITIVE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git vagrant sbt scala)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -52,8 +52,13 @@ unsetopt correct_all
 alias ls="ls --color"
 
 
-export JAVA_HOME=/tank/java7/
+cd() {
+  builtin cd "$@" && ls  
+}
 
+export JAVA_HOME=/tank/java8/
+
+export VOLTDB_HOME=/tank/voltdb/voltdb-3.7
 export M2_HOME=/tank/maven3/
 export PLAY2_HOME=/tank/play2/
 
@@ -76,4 +81,17 @@ export PATH=/home/mgrenonville/google-cloud-sdk/bin:$PATH
 fpath=(~/dotfiles/completions/src $fpath)
 
 setopt APPEND_HISTORY
+
+
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M vicmd "$terminfo[kdch1]" vi-delete-char
+[[ -z "$terminfo[khome]" ]] || bindkey -M vicmd "$terminfo[khome]" vi-beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M vicmd "$terminfo[kend]" vi-end-of-line
+[[ -z "$terminfo[kich1]" ]] || bindkey -M vicmd "$terminfo[kich1]" overwrite-mode
+
+bindkey '^[[1;5C' forward-word # [Ctrl-RightArrow] - move forward one word
+bindkey '^[[1;5D' backward-word # [Ctrl-LeftArrow] - move backward one word
+
+bindkey "^[Od" backward-word  \# control-left
+bindkey "^[Oc" forward-word   \# control-right
+
 

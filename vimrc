@@ -29,7 +29,24 @@ Bundle 'terryma/vim-multiple-cursors'
 " Autoclose ", ', (, ...
 Bundle 'Raimondi/delimitMate'
 
+" Supertab
+Bundle 'ervandew/supertab'
+
 Bundle 'derekwyatt/vim-scala'
+
+Bundle 'Rykka/riv.vim'
+
+" Markdown
+Bundle 'godlygeek/tabular'
+Bundle 'plasticboy/vim-markdown'
+
+" Javascript IDE
+
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'pangloss/vim-javascript'
+Bundle 'scrooloose/syntastic'
+
+
 
 filetype plugin indent on     " required!
 syn on 
@@ -47,6 +64,7 @@ colorscheme Tomorrow-Night
 set wildmenu
 
 let g:airline#extensions#tabline#enabled = 1
+let g:vim_markdown_folding_disabled=1
 
 " Toggle NERDTree on F12
 map <F12> :NERDTreeToggle <CR>
@@ -56,6 +74,8 @@ set tabstop=4
 set smartindent
 set shiftwidth=4
 set expandtab
+
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab
 
 map <F4> :NERDTreeFind <CR>  
 nnoremap <A-left> :bN <CR> 
