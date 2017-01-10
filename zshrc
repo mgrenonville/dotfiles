@@ -95,3 +95,6 @@ bindkey "^[Od" backward-word  \# control-left
 bindkey "^[Oc" forward-word   \# control-right
 
 
+
+export NVM_DIR="/home/mgrenonville/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

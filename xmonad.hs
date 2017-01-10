@@ -30,7 +30,16 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad.Prompt
 import XMonad.Prompt.Window
 
+import XMonad.Layout.Renamed
 import XMonad.Actions.TagWindows
+import qualified XMonad.Layout.Groups.Examples as E
+import XMonad.Layout.Groups.Helpers
+
+
+import qualified XMonad.Layout.Groups as G
+
+import XMonad.Layout.Simplest ( Simplest(Simplest) )
+import XMonad.Layout.ZoomRow
 
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#0000BE"
@@ -39,11 +48,21 @@ myFocusedBorderColor = "#0000BE"
 devWorkspaces = ["`","1","2","3","4","5","6","7","8","9","0","-","="]
 prodWorkspaces = ["p`","p1","p2","p3","p4","p5","p6","p7","p8","p9","p0","p-","p="]
 
-myWorkspaces = devWorkspaces ++ prodWorkspaces 
+myWorkspaces = devWorkspaces ++ prodWorkspaces
 
 full = noBorders Full
 
-layouts =  onWorkspaces ["`"] ((full ||| tiled) ||| tabbed shrinkText defaultTheme ||| avoidStruts (Mirror tiled) ) $  
+-- (tabbed shrinkText defaultTheme )
+
+zoomRowG :: (Eq a, Show a, Read a, Show (l a), Read (l a))
+            => ZoomRow E.GroupEQ (G.Group l a)
+zoomRowG = zoomRowWith E.GroupEQ
+
+tabOfAccordions = G.group  column $ zoomRowG
+    where column = renamed [CutWordsLeft 2, PrependWords "ZoomColumn"] $ Accordion
+
+
+layouts =  onWorkspaces ["1"] (tabOfAccordions) $
             onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
 	    avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
@@ -55,18 +74,16 @@ layouts =  onWorkspaces ["`"] ((full ||| tiled) ||| tabbed shrinkText defaultThe
      ratio   = 1/2
  -- Percent of screen to increment by when resizing panes
      delta   = 3/100
- 
+
 myLayoutHook = (toggleLayouts $ avoidStruts full) $ ( layouts )
 
 
 myManageHook = composeAll
     [ className =? "MPlayer"          --> doFloat
-    , title =? "GNU Image Manipulation Program" --> doFloat
-    , title =? "GIMP"                  --> doFloat
     , title     =? "VLC media player" --> doFloat
     , className =? "Iceweasel"          --> doF (W.shift "1" )
     , className =? "Pidgin"           --> doF (W.shift "5" )
-    , className =? "jetbrains-idea"           --> doF (W.shift "`" )
+    , className =? "jetbrains-idea"           --> doF (W.shift "1" )
     ]
 
 
@@ -82,11 +99,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     , ((0, xF86XK_Mail), spawn "xscreensaver-command -select 2 ; xscreensaver-command -lock")
 -- Return to last workspace
     , ((modMask ,  xK_b ), toggleWS )
+    , ((modMask ,  xK_y ), spawn "xdotool click 2" )
     , ((modMask  , xK_Left  ), prevWS )
     , ((modMask  , xK_Right ), nextWS )
    -- , ((0, xF86XK_AudioRaiseVolume),   spawn "amixer set Master 2%+")
     --, ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 2%-")
     , ((modMask .|. controlMask, xK_s), sshPrompt defaultXPConfig)
+    , ((modMask .|. shiftMask, xK_j), moveToGroupUp(False))
+    , ((modMask .|. shiftMask, xK_k), moveToGroupDown(False))
+    , ((modMask .|. shiftMask, xK_f), E.toggleColumnFull)
+    , ((modMask .|. controlMask, xK_Tab), focusGroupDown)
 
     , ((modMask              , xK_BackSpace), focusUrgent)
     ]
@@ -135,6 +157,6 @@ main = do
                                    { ppOutput = hPutStrLn xmproc
                                    , ppCurrent = xmobarColor "#09F" "" . wrap "[" "]"
                                    , ppTitle = xmobarColor "pink" "" . shorten 50
-                                   }) >> updatePointer (Relative 0.5 0.5) >> takeTopFocus
+                                   }) >> updatePointer (0.5, 0.5) (0.5,0.5)  >> takeTopFocus
 
 }

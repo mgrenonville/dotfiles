@@ -20,6 +20,7 @@ source /home/mgrenonville/.screenlayout/.screens.sh
 pkill insync 
 trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 58 --transparent true --tint 0x000000 --height 15 --monitor 0 --widthtype pixel &
 insync start 
+feh --bg-fill Pictures/P-Space_Zoom.jpg
 wait $wmpid
 keychain --stop all
 

@@ -1,4 +1,5 @@
-Config { font = "xft:droid sans mono:Bold:pixelsize=10"
+Config { 
+    font = "xft:Andale Mono:pixelsize=10"
     , bgColor = "black"
         , fgColor = "grey"
         , position = TopW L 97
