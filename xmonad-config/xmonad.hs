@@ -1,3 +1,5 @@
+module Main (main) where
+
 import qualified Data.Map as M
 
 import XMonad.Prompt
@@ -52,19 +54,31 @@ myWorkspaces = devWorkspaces ++ prodWorkspaces
 
 full = noBorders Full
 
--- (tabbed shrinkText defaultTheme )
+
+
+
 
 zoomRowG :: (Eq a, Show a, Read a, Show (l a), Read (l a))
             => ZoomRow E.GroupEQ (G.Group l a)
 zoomRowG = zoomRowWith E.GroupEQ
 
-tabOfAccordions = G.group  column $ zoomRowG
-    where column = renamed [CutWordsLeft 2, PrependWords "ZoomColumn"] $ Accordion
+
+tabOfAccordions = G.group  column $ x
+    where
+      column = renamed [CutWordsLeft 2, PrependWords "ZoomColumn"] $ Accordion
+      x = tabbed shrinkText defaultTheme
 
 
-layouts =  onWorkspaces ["1"] (tabOfAccordions) $
-            onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
-	    avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
+tabOfAccordions2 = G.group  column $ x
+          where
+            column = renamed [CutWordsLeft 2, PrependWords "ZoomColumn"] $ Accordion
+            x = zoomRowG
+
+
+
+layouts =  onWorkspaces ["1"] (tabOfAccordions2) $
+           onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
+	         avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
  -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -93,7 +107,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
 -- Allow full screen mode
     , ((modMask, xK_f ), sendMessage ToggleLayout)
     , ((0, xF86XK_HomePage), spawn "~/bin/dump_banshee.sh")
-    , ((0, xF86XK_Explorer), spawn "xscreensaver-command -select 1 ; xscreensaver-command -lock")
+    , ((0, xF86XK_Explorer), spawn "firefox https://www.youtube.com/watch?v=kxopViU98Xo ;xtrlock -f")
     , ((modMask .|. shiftMask, xK_g     ), windowPromptGoto  defaultXPConfig )
     , ((modMask .|. shiftMask, xK_b     ), windowPromptBring defaultXPConfig)
     , ((0, xF86XK_Mail), spawn "xscreensaver-command -select 2 ; xscreensaver-command -lock")
@@ -105,10 +119,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
    -- , ((0, xF86XK_AudioRaiseVolume),   spawn "amixer set Master 2%+")
     --, ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 2%-")
     , ((modMask .|. controlMask, xK_s), sshPrompt defaultXPConfig)
-    , ((modMask .|. shiftMask, xK_j), moveToGroupUp(False))
-    , ((modMask .|. shiftMask, xK_k), moveToGroupDown(False))
-    , ((modMask .|. shiftMask, xK_f), E.toggleColumnFull)
-    , ((modMask .|. controlMask, xK_Tab), focusGroupDown)
+    , ((modMask .|. controlMask, xK_j), moveToGroupUp False)
+    , ((modMask .|. controlMask, xK_k), moveToGroupDown False)
+
+    , ((modMask, xK_Return), swapMaster)
+    , ((modMask, xK_k), focusUp)
+    , ((modMask, xK_j), focusDown)
+
+    , ((modMask .|. controlMask, xK_f), E.toggleColumnFull)
+    , ((modMask .|. controlMask, xK_Left), focusGroupUp)
+    , ((modMask .|. controlMask, xK_Right), focusGroupDown)
 
     , ((modMask              , xK_BackSpace), focusUrgent)
     ]

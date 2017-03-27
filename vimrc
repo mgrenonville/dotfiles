@@ -3,59 +3,64 @@ set nocompatible               " be iMproved
 filetype off                   " required!
 execute pathogen#infect()
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 
 " let Vundle manage Vundle
 " required! 
-Bundle 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
-Bundle 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
 
 " git tools
-Bundle 'tpope/vim-fugitive'
-Bundle 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 
 " File navigation
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/ctrlp.vim'
-Bundle 'Lokaltog/vim-easymotion'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Lokaltog/vim-easymotion'
+
+" Themes
+Plugin 'chriskempson/base16-vim'
 
 " Editing facilities
 " Multiple cursor 
 " Uses Ctrl + N
-Bundle 'terryma/vim-multiple-cursors'
+Plugin 'terryma/vim-multiple-cursors'
 " Autoclose ", ', (, ...
-Bundle 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
 
 " Supertab
-Bundle 'ervandew/supertab'
+Plugin 'ervandew/supertab'
 
-Bundle 'derekwyatt/vim-scala'
+Plugin 'derekwyatt/vim-scala'
 
-Bundle 'Rykka/riv.vim'
+Plugin 'Rykka/riv.vim'
 
 " Markdown
-Bundle 'godlygeek/tabular'
-Bundle 'plasticboy/vim-markdown'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " Javascript IDE
 
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'pangloss/vim-javascript'
-Bundle 'scrooloose/syntastic'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'scrooloose/syntastic'
 
-
-
+call vundle#end()            " required
 filetype plugin indent on     " required!
+
 syn on 
 set relativenumber
 " always display status-line
 set laststatus=2
 set background=dark
 
-colorscheme Tomorrow-Night 
+let base16colorspace=256  " Access colors present in 256 colorspace"
+colorscheme base16-default-dark 
 " Other them. Might be better"
 " colorscheme Tomorrow-Night-Eighties
 
@@ -76,6 +81,8 @@ set shiftwidth=4
 set expandtab
 
 autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab
+
+autocmd VimResized * wincmd =
 
 map <F4> :NERDTreeFind <CR>  
 nnoremap <A-left> :bN <CR> 
