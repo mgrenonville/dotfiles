@@ -32,6 +32,16 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad.Prompt
 import XMonad.Prompt.Window
 
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Layout.LayoutModifier
+
+import           XMonad.Hooks.FadeInactive             ( fadeInactiveLogHook )
+-- Imports for Polybar --
+import qualified Codec.Binary.UTF8.String              as UTF8
+import qualified DBus                                  as D
+import qualified DBus.Client                           as D
+
+
 import XMonad.Layout.Renamed
 import XMonad.Actions.TagWindows
 import qualified XMonad.Layout.Groups.Examples as E
@@ -58,9 +68,14 @@ full = noBorders Full
 
 
 
+-- instance Eq a => EQF GroupEQ (G.Group l a) where
+    -- eq _ (G.G l1 _) (G.G l2 _) = G.sameID l1 l2
+
 zoomRowG :: (Eq a, Show a, Read a, Show (l a), Read (l a))
             => ZoomRow E.GroupEQ (G.Group l a)
 zoomRowG = zoomRowWith E.GroupEQ
+
+
 
 
 tabOfAccordions = G.group  column $ x
@@ -76,7 +91,7 @@ tabOfAccordions2 = G.group  column $ x
 
 
 
-layouts =  onWorkspaces ["1"] (tabOfAccordions2) $
+layouts =  onWorkspaces ["1"] ((full ||| tiled) ||| tabbed shrinkText defaultTheme ||| avoidStruts (Mirror tiled) ) $
            onWorkspaces  ["2","3"] ( avoidStruts ( tiled ||| Mirror tiled |||  Accordion)) $
 	         avoidStruts ( tiled ||| Mirror tiled ||| full ) ||| full
   where
@@ -106,7 +121,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     [ ((modMask .|. shiftMask, xK_l), spawn "xscreensaver-command -select 2 ;  xscreensaver-command -lock")
 -- Allow full screen mode
     , ((modMask, xK_f ), sendMessage ToggleLayout)
-    , ((0, xF86XK_HomePage), spawn "~/bin/dump_banshee.sh")
+    , ((0, xF86XK_HomePage), spawn "~/bin/dump_cmus.sh")
     , ((0, xF86XK_Explorer), spawn "firefox https://www.youtube.com/watch?v=kxopViU98Xo ;xtrlock -f")
     , ((modMask .|. shiftMask, xK_g     ), windowPromptGoto  defaultXPConfig )
     , ((modMask .|. shiftMask, xK_b     ), windowPromptBring defaultXPConfig)
@@ -122,6 +137,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
     , ((modMask .|. controlMask, xK_j), moveToGroupUp False)
     , ((modMask .|. controlMask, xK_k), moveToGroupDown False)
 
+    , ((modMask, xK_m), spawn "~/bin/toggleMic.sh")
     , ((modMask, xK_Return), swapMaster)
     , ((modMask, xK_k), focusUp)
     , ((modMask, xK_j), focusDown)
@@ -147,8 +163,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
     -- Map Super_R to prod workspaces, see .Xmodmap
-    [((m .|. mod3Mask, k), windows $ f i)
-        | (i, k) <- zip (prodWs(workspaces(conf))) numQwerty,
+    [((m .|. modMask, k), windows $ f i)
+        | (i, k) <- zip (prodWs(workspaces(conf))) numFnKeys,
           (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
     [((m .|. modMask, k), windows $ f i)
@@ -160,23 +176,85 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) =
 
 -- keys between ` and = on an qwerty keyboard. 13 worspaces.
 numQwerty = [0x60,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x30,0x2d,0x3d]
+-- Escape to F12
+numFnKeys = [0xff1b,xK_F1,xK_F2,xK_F3,xK_F4,xK_F5,xK_F6,xK_F7,xK_F8,xK_F9,xK_F10,xK_F11,xK_F12]
+
+
+------------------------------------------------------------------------
+-- Polybar settings (needs DBus client).
+--
+mkDbusClient :: IO D.Client
+mkDbusClient = do
+  dbus <- D.connectSession
+  D.requestName dbus (D.busName_ "org.xmonad.log") opts
+  return dbus
+ where
+  opts = [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+
+-- Emit a DBus signal on log updates
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str =
+  let opath  = D.objectPath_ "/org/xmonad/Log"
+      iname  = D.interfaceName_ "org.xmonad.Log"
+      mname  = D.memberName_ "Update"
+      signal = D.signal opath iname mname
+      body   = [D.toVariant $ UTF8.decodeString str]
+  in  D.emit dbus $ signal { D.signalBody = body }
+
+polybarHook :: D.Client -> PP
+polybarHook dbus =
+  let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ") " %{F-}" s
+                  | otherwise  = mempty
+      blue   = "#2E9AFE"
+      gray   = "#7F7F7F"
+      orange = "#ea4300"
+      purple = "#9058c7"
+      red    = "#722222"
+  in  def { ppOutput          = dbusOutput dbus
+          , ppCurrent         = wrapper blue
+          , ppVisible         = wrapper gray
+          , ppUrgent          = wrapper orange
+          , ppHidden          = wrapper gray
+         -- , ppHiddenNoWindows = wrapper red
+          , ppTitle           = wrapper purple . shorten 60
+          }
+
+myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)
+-- [module/xmonad]
+-- type = custom/script
+-- exec = ~/bin/xmonad-log
+-- tail = true
+
+-----------------------------------------------------------------------------}}}
+-- STARTUPHOOK                                                               {{{
+--------------------------------------------------------------------------------
+myStartupHook = do
+  setWMName "LG3D"
+  spawn "~/.config/polybar/launch.sh --forest"
 
 main = do
-      xmproc <- spawnPipe "xmobar"
-      xmonad $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }  $ defaultConfig {
+      dbus <- mkDbusClient
+      xmonad $ ewmh $ docks $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }  $ defaultConfig {
                           manageHook = myManageHook <+> manageDocks <+> manageHook defaultConfig,
                           keys = newKeys,
                           modMask = mod4Mask,
                           normalBorderColor  = myNormalBorderColor,
                           focusedBorderColor = myFocusedBorderColor,
                           layoutHook = myLayoutHook,
-                          startupHook = setWMName "LG3D",
+                          startupHook = myStartupHook,
                           terminal = "urxvt",
                           workspaces = myWorkspaces,
-                          logHook =  (dynamicLogWithPP $ xmobarPP
-                                   { ppOutput = hPutStrLn xmproc
-                                   , ppCurrent = xmobarColor "#09F" "" . wrap "[" "]"
-                                   , ppTitle = xmobarColor "pink" "" . shorten 50
-                                   }) >> updatePointer (0.5, 0.5) (0.5,0.5)  >> takeTopFocus
+                          logHook =  (myPolybarLogHook dbus)
+                          >> updatePointer (0.5, 0.5) (0.5,0.5)  >> takeTopFocus
 
 }
+
+
+
+------------------------------------------------------------------------
+-- Status bars and logging
+
+-- Perform an arbitrary action on each internal state change or X event.
+-- See the 'XMonad.Hooks.DynamicLog' extension for examples.
+--
+myLogHook = fadeInactiveLogHook 0.9
