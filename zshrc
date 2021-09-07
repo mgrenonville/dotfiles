@@ -40,10 +40,11 @@ CASE_SENSITIVE="true"
 
 
 
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git vagrant sbt scala)
+plugins=(git vagrant sbt scala screen knife nix-shell knife_ssh)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -62,7 +63,7 @@ export VOLTDB_HOME=/tank/voltdb/voltdb-3.7
 export M2_HOME=/tank/maven3/
 export PLAY2_HOME=/tank/play2/
 
-export PATH=$PLAY2_HOME:$M2_HOME/bin:$JAVA_HOME/bin:/opt/idea/bin:/opt/firefox/:$PATH
+export PATH=$PLAY2_HOME:$M2_HOME/bin:/opt/idea/bin:/opt/firefox/:~/.bloop/:$PATH
 
 export PAGER="less -FRX"
 if [ -d /opt/firefox ] ; then
@@ -99,6 +100,13 @@ bindkey "^[Oc" forward-word   \# control-right
 export NVM_DIR="/home/mgrenonville/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+#export SBT_OPTS="$SBT_OPTS  -Dsbt.override.build.repos=true"
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+base16_tomorrow-night
+
+
+autoload -U compinit
+fpath=($HOME/.bloop/zsh $fpath)
+compinit

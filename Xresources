@@ -16,8 +16,9 @@ urxvt*background: #222222
 urxvt*foreground: #dddddd
 
 !urxvt*faceName: xft:Inconsolata+Awesome:pixelsize=10
-!urxvt*font: xft:Terminus:pixelsize=11,xft:Inconsolata+Awesome:pixelsize=10
 
+!URxvt.font: xft:Inconsolata:pixelsize=12
+!urxvt*font: xft:Terminus:pixelsize=11,xft:Inconsolata+Awesome:pixelsize=10
 ! found on https://github.com/sykora/etc/blob/master/x/xdefaults
 ! urxvt.color0: #000000
 ! urxvt.color1: #D32A2F

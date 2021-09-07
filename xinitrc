@@ -16,17 +16,20 @@ xrandr --fbmm `xrandr | sed -n '/ connected/s/.* \([0-9]*\)mm x \([0-9]*\)mm/\1x
 xrdb -merge ~/.Xresources
 xbindkeys
 xscreensaver &
-redshift-gtk  -c ~/dotfiles/redshift.conf &
+#redshift-gtk  -c ~/dotfiles/redshift.conf &
+
+xset +fp /home/mgrenonville/.fonts
+xset fp rehash
 
 xmonad & wmpid=$!
 
 
 xautolock -time 1 -locker xtrlock &
 source /home/mgrenonville/.screenlayout/.screens.sh
-stalonetray &
 fdpowermon &
 xbindkeys
-feh --bg-fill Pictures/P-Space_Zoom.jpg
+#insync start 
+feh --bg-fill Pictures/P-Space_Zoom.jpg Pictures/hierarchy-impure.jpeg
 wait $wmpid
 keychain --stop all
 
