@@ -48,7 +48,7 @@ urxvt*foreground: #dddddd
 #define t_aqua	        	#8abeb7
 #define t_blue	        	#81a2be
 #define t_purple        	#b294bb
-
+URxvt.font: xft:DejaVu Sans Mono:pixelsize=16
 
 *.foreground:   t_foreground
 *.background:   t_background
@@ -103,4 +103,12 @@ URxvt.keysym.Control-Right: \033[1;5C
 URxvt.keysym.Control-Page_Up: \033[5;5~
 URxvt.keysym.Control-Page_Down: \033[6;5~
 
+
+! Fonts {{{
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      rgb
+Xft.hintstyle: hintfull
+Xft.dpi:       128
+! }}}
 
