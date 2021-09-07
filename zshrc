@@ -57,7 +57,7 @@ cd() {
   builtin cd "$@" && ls  
 }
 
-#export JAVA_HOME=/tank/java8/
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
 export VOLTDB_HOME=/tank/voltdb/voltdb-3.7
 export M2_HOME=/tank/maven3/
