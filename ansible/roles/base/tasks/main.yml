@@ -5,18 +5,16 @@
 - name: install
   # apt is our module. It installs debian packages. Here we are passing an
   # `` variable, which is the item from `with_items`
-  apt: pkg=
-  # `with_items` will loop through a list and run the module passing each item
-  # as ``
-  with_items:
-    # better shell
+  apt: 
+    pkg:
     - zsh
-    # terminal multiplexer
     - tmux
-    # terminal editor
-    - vim-gtk
-    # shh
+    - vim
     - ssh
+    - stow
+    - htop
+    - aptitude
+    - screen
 
 # This is an example of how to gather information from the machine. We
 # run a command with the "shell" module and register the result into the
@@ -28,7 +26,7 @@
   # ansible. In this case, we want it to always be false, as we are just
   # retrieving information.
   changed_when: False
-  sudo: no
+  become: false
 
 # Now, we want to set zsh as the default shell, unless it is already the default
 # one.
@@ -38,4 +36,9 @@
   # value registered previously within the "default_shell" variable.
   when: default_shell.stdout.find('/bin/zsh') == -1
 
-
+# - name: Clone a github repository
+#   git:
+#     repo: https://github.com/mgrenonville/dotfiles.git
+#     dest: ~/
+#     clone: yes
+#     update: yes

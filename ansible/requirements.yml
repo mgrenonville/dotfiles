@@ -1,4 +1,6 @@
 ---
 roles:
   - name: ayltai.adoptopenjdk 
+  - name: gantsign.intellij
+
 

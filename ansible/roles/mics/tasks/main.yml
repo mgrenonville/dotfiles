@@ -1,0 +1,38 @@
+
+- name: LSB release
+  shell: 'lsb_release -cs'
+  register: lsb_release
+  # changed when determines when will this task be considered changed when running
+  # ansible. In this case, we want it to always be false, as we are just
+  # retrieving information.
+  changed_when: False
+
+- name: Add vagrant Apt signing key
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg 
+    state: present
+
+- name: Add vagrant repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com buster main
+    state: present
+
+- name: Add bazel Apt signing key
+  ansible.builtin.apt_key:
+    url: https://bazel.build/bazel-release.pub.gpg
+    state: present
+
+- name: Add bazel repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8
+    state: present
+
+- name: install bazel and vagrant related softwares
+  apt: 
+    pkg:
+    - bazel
+    - vagrant
+
+
+
+

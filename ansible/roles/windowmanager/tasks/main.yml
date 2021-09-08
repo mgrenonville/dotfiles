@@ -1,0 +1,76 @@
+---
+- name: Install xmonad and ui-tools
+  apt:
+    pkg:
+      - xmonad
+      - libghc-xmonad-dev
+      - libghc-xmonad-contrib-dev
+      - libghc-dbus-dev
+      - libgudev-1.0-0
+      - polybar
+      - rofi
+      - rxvt-unicode
+      - xscreensaver
+      - feh
+      - dbus-x11
+      - x11-common
+      - xinit
+  
+
+
+- name: Install qwertyfr
+  apt:
+    deb: http://marin.jb.free.fr/qwerty-fr/xkb-qwerty-fr_0.5_all.deb
+  #sudo: true
+
+
+- name: install xmonad-log
+  ansible.builtin.unarchive:
+    src: https://github.com/xintron/xmonad-log/releases/download/0.1.0/xmonad-log-0.1.0-linux-amd64.zip
+    dest: /home/{{user}}/bin
+    remote_src: yes
+    
+- name: Copy xinitrc
+  ansible.builtin.copy:
+    src: ../xinitrc
+    dest: /home/{{user}}/.xinitrc
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'
+
+
+- name: Copy xmonad
+  ansible.builtin.copy:
+    src: ../xmonad-config/xmonad.hs
+    dest: /home/{{user}}/.xmonad/xmonad.hs
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'
+
+- name: Copy Xresource
+  ansible.builtin.copy:
+    src: ../Xresources
+    dest: /home/{{user}}/.Xresources
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: /home/{{user}}/.config/polybar
+    state: directory
+
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: /home/{{user}}/bin
+    state: directory
+    mode: '0755'
+
+- name: Install polybar theme
+  ansible.builtin.copy:
+    src: ../polybar/forest
+    dest: /home/{{user}}/.config/polybar
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'

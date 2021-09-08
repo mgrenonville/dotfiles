@@ -5,6 +5,7 @@ exec >> .session.log 2>> .session.err
 echo "xinitrc : `date`"
 echo 1>&2 "xinitrc : `date`"
 
+export PATH=$PATH:~/bin
 setxkbmap us  -variant qwerty-fr
 
 screen -dmS cmus /usr/bin/cmus
