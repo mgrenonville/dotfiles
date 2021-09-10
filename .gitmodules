@@ -1,15 +1,9 @@
 [submodule "zsh-completions"]
 	path = zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
-[submodule "completions"]
-	path = completions
-	url = https://github.com/zsh-users/zsh-completions.git
 [submodule "xcompose"]
 	path = xcompose
-	url = git@github.com:kragen/xcompose.git
+	url = https://github.com/kragen/xcompose.git
 [submodule "polybar-themes"]
 	path = polybar-themes
 	url = https://github.com/adi1090x/polybar-themes.git
-[submodule "nerd-fonts"]
-	path = nerd-fonts
-	url = git@github.com:ryanoasis/nerd-fonts.git
