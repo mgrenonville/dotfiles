@@ -110,3 +110,18 @@ base16_tomorrow-night
 autoload -U compinit
 fpath=($HOME/.bloop/zsh $fpath)
 compinit
+
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+
+xset b off
+xset b 0 0 0
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+export PATH=/opt/firefox/:$PATH
