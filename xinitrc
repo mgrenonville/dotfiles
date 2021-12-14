@@ -12,6 +12,8 @@ screen -dmS cmus /usr/bin/cmus
 xrdb -merge ~/.Xresources
 xbindkeys
 xscreensaver &
+nm-applet &
+fdpowermon &
 #redshift-gtk  -c ~/dotfiles/redshift.conf &
 
 xset +fp /home/mgrenonville/.fonts
@@ -22,7 +24,6 @@ xmonad & wmpid=$!
 xautolock -time 1 -locker xtrlock &
 source /home/mgrenonville/.screenlayout/.screens.sh
 pkill insync 
-trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 58 --transparent true --tint 0x000000 --height 15 --monitor 0 --widthtype pixel &
 #insync start 
 feh --bg-fill Pictures/P-Space_Zoom.jpg Pictures/hierarchy-impure.jpeg
 wait $wmpid
