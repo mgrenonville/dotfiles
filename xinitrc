@@ -1,7 +1,7 @@
 ## Don't forget to ln -s ~/.xinitrc ~/.xsession if necessary 
 
 exec >> .session.log 2>> .session.err
-
+.screenlayout/single.sh
 echo "xinitrc : `date`"
 echo 1>&2 "xinitrc : `date`"
 
@@ -25,7 +25,7 @@ xautolock -time 1 -locker xtrlock &
 source /home/mgrenonville/.screenlayout/.screens.sh
 pkill insync 
 #insync start 
-feh --bg-fill Pictures/P-Space_Zoom.jpg Pictures/hierarchy-impure.jpeg
+feh --bg-fill Pictures/Dorothy-0113-Alternative-Love-HP.jpg
 wait $wmpid
 keychain --stop all
 

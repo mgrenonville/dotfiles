@@ -113,19 +113,21 @@ myManageHook = composeAll
     , className =? "Iceweasel"          --> doF (W.shift "1" )
     , className =? "Pidgin"           --> doF (W.shift "5" )
     , className =? "jetbrains-idea"           --> doF (W.shift "1" )
+    , title =? "Parameters"           --> doIgnore 
     ]
 
 
 newKeys x = M.union (M.fromList (myKeys x)) (keys defaultConfig x)
 myKeys conf@(XConfig {XMonad.modMask = modMask}) =
-    [ ((modMask .|. shiftMask, xK_l), spawn "xscreensaver-command -select 2 ;  xscreensaver-command -lock")
+    [ ((modMask .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
 -- Allow full screen mode
     , ((modMask, xK_f ), sendMessage ToggleLayout)
+    , ((0   , xF86XK_Sleep     ), spawn "xscreensaver-command -lock")
     , ((0, xF86XK_HomePage), spawn "~/bin/dump_cmus.sh")
     , ((0, xF86XK_Explorer), spawn "firefox https://www.youtube.com/watch?v=kxopViU98Xo ;xtrlock -f")
     , ((modMask .|. shiftMask, xK_g     ), windowPromptGoto  defaultXPConfig )
     , ((modMask .|. shiftMask, xK_b     ), windowPromptBring defaultXPConfig)
-    , ((0, xF86XK_Mail), spawn "xscreensaver-command -select 2 ; xscreensaver-command -lock")
+    , ((0, xF86XK_Mail), spawn "xscreensaver-command -lock")
 -- Return to last workspace
     , ((modMask ,  xK_b ), toggleWS )
     , ((modMask ,  xK_y ), spawn "xdotool click 2" )
