@@ -6,10 +6,12 @@ echo "xinitrc : `date`"
 echo 1>&2 "xinitrc : `date`"
 
 setxkbmap us  -variant qwerty-fr
+xmodmap -e "keycode 112 = Home"
+xmodmap -e "keycode 117 = End"
 
 # Disable middle click on touchpad
 xinput set-button-map 13 1 1 3 4 5 6 7
- xinput --set-prop 13 'libinput Accel Speed' 0.5
+xinput --set-prop 13 'libinput Accel Speed' 0.5
 xrandr --fbmm `xrandr | sed -n '/ connected/s/.* \([0-9]*\)mm x \([0-9]*\)mm/\1x\2/p'`
 
 # before starting xmonad, we want a correct X db and a running urxvt daemon
